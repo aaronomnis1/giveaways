@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Free Game Giveaways</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #1e1e1e;
+        color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+    }
+    .card {
+        background: #2a2a2a;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+    .card img {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+    .title {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .platform {
+        color: #9acdff;
+        margin-bottom: 10px;
+    }
+    .desc {
+        font-size: 0.9em;
+        margin-bottom: 10px;
+    }
+    a.button {
+        display: inline-block;
+        padding: 8px 12px;
+        background: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎮 Free Game Giveaways</h1>
+<div class="container" id="giveaways"></div>
+
+<script>
+async function loadGiveaways() {
+    const url = "https://www.gamerpower.com/api/giveaways?type=game";
+    const container = document.getElementById("giveaways");
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        data.forEach(g => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+                <img src="${g.thumbnail}" alt="Thumbnail">
+                <div class="title">${g.title}</div>
+                <div class="platform">Platforms: ${g.platforms}</div>
+                <div class="desc">${g.short_description}</div>
+                <a class="button" href="${g.open_giveaway_url}" target="_blank">Claim Giveaway</a>
+            `;
+
+            container.appendChild(card);
+        });
+
+    } catch (err) {
+        container.innerHTML = "<p>Failed to load giveaways.</p>";
+    }
+}
+
+loadGiveaways();
+</script>
+
+</body>
+</html>
